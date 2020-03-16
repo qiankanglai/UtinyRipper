@@ -93,7 +93,7 @@ namespace uTinyRipper.Project
 		{
 			if (m_convert)
 			{
-				return "png";
+				return "tga";
 			}
 			return base.GetExportExtension(asset);
 		}

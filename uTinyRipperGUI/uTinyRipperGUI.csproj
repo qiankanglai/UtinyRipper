@@ -144,6 +144,7 @@
     <Compile Include="Exporters\Audio\AudioConverter.cs" />
     <Compile Include="Exporters\Shader\DirectX\DXDataHeader.cs" />
     <Compile Include="Exporters\Shader\DirectX\DXInputPrimitive.cs" />
+    <Compile Include="Exporters\Texture\TGASharpLib.cs" />
     <Compile Include="ThirdParty\DXShaderRestorer\ConstantBufferChunk.cs" />
     <Compile Include="ThirdParty\DXShaderRestorer\ConstantBufferFlags.cs" />
     <Compile Include="ThirdParty\DXShaderRestorer\ConstantBufferType.cs" />
