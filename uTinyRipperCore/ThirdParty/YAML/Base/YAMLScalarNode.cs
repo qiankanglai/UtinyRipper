@@ -131,7 +131,7 @@ namespace uTinyRipper.YAML
 		internal YAMLScalarNode(string value, bool _)
 		{
 			SetValue(value);
-			Style = value.Length >= MaxLineLength ? ScalarStyle.DoubleQuoted : ScalarStyle.Plain;
+			Style = (!_ && value.Length >= MaxLineLength) ? ScalarStyle.DoubleQuoted : ScalarStyle.Plain;
 		}
 
 		public void SetValue(bool value)
