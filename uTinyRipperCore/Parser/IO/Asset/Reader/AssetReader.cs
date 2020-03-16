@@ -14,6 +14,11 @@ namespace uTinyRipper
 			IsAlignString = layout.IsAlign;
 		}
 
+		public void Skip(int size)
+		{
+			FillInnerBuffer(size);
+		}
+
 		public override char ReadChar()
 		{
 			FillInnerBuffer(sizeof(char));

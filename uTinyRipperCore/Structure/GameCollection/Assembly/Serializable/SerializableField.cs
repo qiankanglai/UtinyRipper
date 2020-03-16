@@ -4,6 +4,7 @@ using System.Linq;
 using uTinyRipper;
 using uTinyRipper.Classes;
 using uTinyRipper.Converters;
+using uTinyRipper.SerializedFiles;
 using uTinyRipper.YAML;
 
 using Object = uTinyRipper.Classes.Object;
@@ -12,7 +13,7 @@ namespace uTinyRipper.Game.Assembly
 {
 	public struct SerializableField
 	{
-		public void Read(AssetReader reader, int depth, in SerializableType.Field etalon)
+		public void Read(AssetReader reader, int depth, in SerializableType.Field etalon, TypeTreeNode[] TreeNodes, int TreeNodeIdx)
 		{
 			switch (etalon.Type.Type)
 			{
@@ -181,7 +182,10 @@ namespace uTinyRipper.Game.Assembly
 					else
 					{
 						IAsset structure = etalon.Type.CreateInstance(depth + 1);
-						structure.Read(reader);
+						if (structure is SerializableStructure && TreeNodes != null)
+							(structure as SerializableStructure).Read(reader, TreeNodes, TreeNodeIdx);
+						else
+							structure.Read(reader);
 						CValue = structure;
 					}
 					break;
@@ -362,6 +366,8 @@ namespace uTinyRipper.Game.Assembly
 
 		public YAMLNode ExportYAML(IExportContainer container, in SerializableType.Field etalon)
 		{
+			if (CValue == null)
+				return null;
 			if (etalon.IsArray)
 			{
 				if (etalon.Type.Type == PrimitiveType.Complex)

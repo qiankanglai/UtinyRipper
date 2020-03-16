@@ -16,6 +16,12 @@ namespace uTinyRipper.Classes
 		{
 		}
 
+		RTTIBaseClassDescriptor[] ClassDescriptors;
+		public void InjectHierarchy(RTTIClassHierarchyDescriptor hierarchy)
+		{
+			ClassDescriptors = hierarchy.Types;
+		}
+
 		public override void Read(AssetReader reader)
 		{
 			long position = reader.BaseStream.Position;
@@ -54,6 +60,14 @@ namespace uTinyRipper.Classes
 				else
 				{
 					Structure = behaviourType.CreateSerializableStructure();
+					foreach (var ClassDescriptor in ClassDescriptors)
+					{
+						if (ClassDescriptor.TypeHash.Equals(script.PropertiesHash))
+						{
+							Structure.Read(reader, ClassDescriptor.Tree.Nodes, 12);
+							return;
+						}
+					}
 					Structure.Read(reader);
 					return;
 				}

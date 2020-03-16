@@ -37,7 +37,7 @@ namespace uTinyRipperGUI.Exporters
 						TextureConverter.UnpackNormal(bitmap.BitsPtr, bitmap.Bits.Length);
 					}
 
-					bitmap.Save(exportStream, ImageFormat.Png);
+					bitmap.SaveTGA(exportStream);
 					return true;
 				}
 			}

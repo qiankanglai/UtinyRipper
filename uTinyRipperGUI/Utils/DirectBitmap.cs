@@ -67,6 +67,12 @@ namespace uTinyRipperGUI
 			m_bitmap.Save(stream, format);
 		}
 
+		public void SaveTGA(Stream stream)
+		{
+			TGASharpLib.TGA file = new TGASharpLib.TGA(m_bitmap);
+			file.Save(stream);
+		}
+
 		public void Dispose()
 		{
 			GC.SuppressFinalize(this);
