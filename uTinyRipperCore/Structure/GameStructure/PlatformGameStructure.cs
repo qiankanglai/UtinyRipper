@@ -276,6 +276,6 @@ namespace uTinyRipper
 		protected const string ResourcesAssetsName = "resources.assets";
 		protected const string LevelPrefix = "level";
 
-		protected const string AssetBundleExtension = ".unity3d";
+		protected const string AssetBundleExtension = ".ab";
 	}
 }

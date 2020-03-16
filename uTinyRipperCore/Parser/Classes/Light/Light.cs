@@ -202,6 +202,7 @@ namespace uTinyRipper.Classes
 			}
 			Flare.Read(reader);
 			RenderMode = (LightRenderMode)reader.ReadInt32();
+			reader.ReadInt32(); // dirty fix
 			if (HasCullingMask(reader.Version))
 			{
 				CullingMask.Read(reader);
