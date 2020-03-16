@@ -321,6 +321,11 @@ namespace uTinyRipper
 			try
 #endif
 			{
+				var monoBehaivour = (asset as MonoBehaviour);
+				if (monoBehaivour != null)
+				{
+					monoBehaivour.InjectHierarchy(this.Metadata.Hierarchy);
+				}
 				asset.Read(reader);
 			}
 #if !DEBUG

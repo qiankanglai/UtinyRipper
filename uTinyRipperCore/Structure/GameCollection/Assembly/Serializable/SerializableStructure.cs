@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using uTinyRipper.Classes;
 using uTinyRipper.Converters;
+using uTinyRipper.SerializedFiles;
 using uTinyRipper.YAML;
 
 using Object = uTinyRipper.Classes.Object;
@@ -24,7 +25,41 @@ namespace uTinyRipper.Game.Assembly
 				SerializableType.Field etalon = Type.GetField(i);
 				if (IsAvailable(etalon))
 				{
-					Fields[i].Read(reader, Depth, etalon);
+					Fields[i].Read(reader, Depth, etalon, null, 0);
+				}
+			}
+		}
+
+		public void Read(AssetReader reader, TypeTreeNode[] TreeNodes, int TreeNodeIdx)
+		{
+			for (int i = 0; i < Fields.Length; i++)
+			{
+				SerializableType.Field etalon = Type.GetField(i);
+				if (IsAvailable(etalon))
+				{
+					int foundIdx = -1;
+					for (int j = TreeNodeIdx; j < TreeNodes.Length; j++)
+					{
+						if (TreeNodes[j].Depth == Depth + 1 && TreeNodes[j].Name == etalon.Name)
+						{
+							foundIdx = j;
+							break;
+						}
+					}
+					if (foundIdx < 0)
+						continue;
+					while (TreeNodeIdx < foundIdx)
+					{
+						if (TreeNodes[TreeNodeIdx].Depth == Depth + 1)
+							reader.Skip(TreeNodes[TreeNodeIdx].ByteSize);
+						//reader.ReadInt
+						TreeNodeIdx++;
+					}
+					Fields[i].Read(reader, Depth, etalon, TreeNodes, TreeNodeIdx);
+					// move through current TreeNode
+					TreeNodeIdx++;
+					while (TreeNodeIdx < TreeNodes.Length && TreeNodes[TreeNodeIdx].Depth > Depth + 1)
+						TreeNodeIdx++;
 				}
 			}
 		}
@@ -49,7 +84,9 @@ namespace uTinyRipper.Game.Assembly
 				SerializableType.Field etalon = Type.GetField(i);
 				if (IsAvailable(etalon))
 				{
-					node.Add(etalon.Name, Fields[i].ExportYAML(container, etalon));
+					var v = Fields[i].ExportYAML(container, etalon);
+					if (v != null)
+						node.Add(etalon.Name, v);
 				}
 			}
 			return node;
